@@ -11,13 +11,14 @@ str2: .asciiz "\nInput the root a: "
 str3: .asciiz "\nInput k1: "
 str5: .asciiz "\na^k1 % p = "
 str7: .asciiz "\n(a^k1)^k2 % p = "
+str8: .asciiz "\n Floating point test:\n"
 
-# $s0 = p
-# $s1 = a
-# $s2 = k1
-# $t0 = a^k1
-# $s3 = $t0 % p
-# $t2 = k1 = n for loop
+# $s0 = p = $f0
+# $s1 = a = $f1
+# $s2 = k1 = $f2
+# $f3 = a^k1
+# $f4 = $t0 % p
+# $t0 = k1 = n for loop
 .text
 	#Print str1, read an integer (p), store it into $s0
 	li $v0, 4	# 4 = print_string
@@ -43,21 +44,29 @@ str7: .asciiz "\n(a^k1)^k2 % p = "
 	syscall
 	add $s2, $v0, $zero
 	
-	#compute "a^k1", store into $t0, compute $t0 % p, store into $s3, print str5, print $s3
-	#code to compute a^k1 = $t0 here
+	#convert p, a, k1 to floating point numbers
+	mtc1 $s0, $f0
+	cvt.s.w $f0, $f0
+	mtc1 $s1, $f1
+	cvt.s.w $f1, $f1
+	mtc1 $s2, $f2
+	cvt.s.w $f2, $f2
 	
-	#mul $t0, $s0, $s1	#temp code
-	#addi $t0, $t0, 69	#to test $t0 % p
-	
-	div $t0, $s0	#stores the remander into HI ($t0 % $s0 = HI)
-	mfhi $s3
+	#compute "a^k1", store into $f3, compute $t0 % p, store into $f4, print str5, print $f4
+	addi $t0, $s2, -2
+	mul.s $f3, $f1, $f1
+powerLoop:
+	beqz $t0 powerComplete
+	mul.s $f3, $f1, $f3
+	addi $t0, $t0, -1
+	b powerLoop
+powerComplete:
 	li $v0, 4
 	la $a0, str5
 	syscall
-	li $v0, 1
-	add $a0, $s3, $zero
+	li $v0, 2
+	mov.s $f12, $f3
 	syscall
-	#compute "$t0^k2", store into $t2, compute $t2 % p, store into $s3, print str7, print $s3
 	
 	
 	#Crap that is needed to end main
