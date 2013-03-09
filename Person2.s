@@ -9,8 +9,8 @@ main:		# Start of code section
 str1: .asciiz "\nInput the prime number: "
 str2: .asciiz "\nInput the root a: "
 str3: .asciiz "\nInput k1: "
-str6: .asciiz "\nGive this number to person 2: "
-str7: .asciiz "\nInput the number given to you by person 2: "
+str6: .asciiz "\nGive this number to person 1: "
+str7: .asciiz "\nInput the number given to you by person 1: "
 str8: .asciiz "\nKey = "
 
 # $s0 = p = $f2
