@@ -8,17 +8,17 @@ main:		# Start of code section
 
 str1: .asciiz "\nInput the prime number: "
 str2: .asciiz "\nInput the root a: "
-str3: .asciiz "\nInput k1: "
+str3: .asciiz "\nInput k2: "
 str6: .asciiz "\nGive this number to person 1: "
 str7: .asciiz "\nInput the number given to you by person 1: "
 str8: .asciiz "\nKey = "
 
 # $s0 = p = $f2
 # $s1 = a = $f1
-# $s2 = k1
-# $f3 = a^k1
-# $f7 = a^k1 % p
-# $t0 = k1 = n for loop
+# $s2 = k2
+# $f3 = a^k2
+# $f7 = a^k2 % p
+# $t0 = k2 = n for loop
 .text
 	#Print str1, read an integer (p), store it into $s0
 	li $v0, 4	# 4 = print_string
@@ -36,7 +36,7 @@ str8: .asciiz "\nKey = "
 	syscall
 	add $s1, $v0, $zero
 	
-	#print str3, read an integer (k1), store it into $s2
+	#print str3, read an integer (k2), store it into $s2
 	li $v0, 4
 	la $a0, str3
 	syscall
@@ -44,13 +44,13 @@ str8: .asciiz "\nKey = "
 	syscall
 	add $s2, $v0, $zero
 	
-	#convert p, a, k1 to floating point numbers
+	#convert p, a, k2 to floating point numbers
 	mtc1 $s0, $f2
 	cvt.s.w $f2, $f2
 	mtc1 $s1, $f1
 	cvt.s.w $f1, $f1
 	
-	#compute "a^k1", store into $f3
+	#compute "a^k2", store into $f3
 	addi $t0, $s2, -2
 	mul.s $f3, $f1, $f1
 powerLoop:
@@ -67,7 +67,7 @@ powerComplete:
 	cvt.s.w $f5, $f5	#$f5 = floor($f3/p)
 	
 	mul.s $f6, $f2, $f5
-	sub.s $f7, $f3, $f6	#$f7 = a^k1 % p
+	sub.s $f7, $f3, $f6	#$f7 = a^k2 % p
 	
 	li $v0, 4
 	la $a0, str6
@@ -76,14 +76,14 @@ powerComplete:
 	mov.s $f12, $f7
 	syscall
 	
-	#get a^k2 % p from second person
+	#get a^k1 % p from second person
 	li $v0, 4
 	la $a0, str7
 	syscall
 	li $v0, 6
-	syscall			#$f0 is now a^k2 % p
+	syscall			#$f0 is now a^k1 % p
 	
-	#compute $f0^k1
+	#compute $f0^k2
 	addi $t0, $s2, -2
 	mul.s $f14, $f0, $f0
 powerLoop2:
