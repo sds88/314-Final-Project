@@ -26,9 +26,9 @@ add $t3, $v0, $zero
 li $v0, 16
 move $a0, $s6
 syscall
-#la $a0, sWord
-#li $v0,4
-#syscall
+la $a0, sWord
+li $v0,4
+syscall
 add $t4, $zero,$zero
 #calcSize:
 #lb $t2, sWord($t4)
@@ -86,15 +86,15 @@ syscall
 li $v0, 16
 move $a0, $s6
 syscall
-#printInit:
-#add $t4, $zero,$zero
-#li $v0, 11
-#print:
-#beq $t4, $t3, e
-#lb $a0, sWord($t4)
-#syscall
-#addi $t4,$t4,1
-#b print
+printInit:
+add $t4, $zero,$zero
+li $v0, 11
+print:
+beq $t4, $t3, e
+lb $a0, sWord($t4)
+syscall
+addi $t4,$t4,1
+b print
 e:
 li $v0, 10
 syscall
