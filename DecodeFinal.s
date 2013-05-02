@@ -1,4 +1,4 @@
-#Blah
+#Michael Harkins, Brent Reinhardt, Sam Schneider
 
 .data	# Data declaration section
 fin: .asciiz "encoded.txt"
